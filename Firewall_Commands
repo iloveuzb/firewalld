@@ -9,4 +9,19 @@ cd /var/www/html
 net.ipv4.ip_forward = 1
  
 sysctl -p
+systemctl status firewalld
+sudo firewall-cmd --state
  
+firewall-cmd --get-default-zone
+ 
+sudo firewall-cmd --list-all
+firewall-cmd --get-default-zone
+ 
+sudo firewall-cmd --zone=public --add-service=http
+sudo firewall-cmd --zone=public --add-port=5000/tcp
+firewall-cmd --zone=public --add-forward-port=port=9000:proto=tcp:toport=80:toaddr=127.0.0.1 --permanent
+ 
+firewall-cmd --zone=public --add-forward-port=port=9000:proto=tcp:toport=80 --permanent
+firewall-cmd --zone=public --remove-forward-port=port=9000:proto=tcp:toport=80:toaddr=127.0.0.1 --permanent
+curl localhost
+systemctl status httpd 
